@@ -157,7 +157,7 @@ const styles = {
     borderTopColor: "#fff", borderRadius: "50%",
     animation: "spin 0.8s linear infinite", display: "inline-block"
   },
-  main: { flex: 1, maxWidth: 760, margin: "0 auto", padding: "2rem 1rem", width: "100%" },
+  main: { flex: 1, maxWidth: 760, margin: "0 auto", padding: "2rem 1rem", width: "100%", height: "auto" },
   empty: { textAlign: "center", padding: "4rem 1rem" },
   emptyIcon: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { fontSize: 18, fontWeight: 600, color: "#1a1a2e", marginBottom: 8 },
@@ -197,7 +197,9 @@ const styles = {
     background: "#fff", borderRadius: 16,
     border: "1px solid #e8e8e8", padding: "2rem",
     boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-    width: "100%"
+    width: "100%",
+    height: "auto",
+    overflow: "visible"
   },
   newsletter: { maxWidth: 680, margin: "0 auto" },
   footer: {
