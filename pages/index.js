@@ -196,7 +196,8 @@ const styles = {
   newsletterWrap: {
     background: "#fff", borderRadius: 16,
     border: "1px solid #e8e8e8", padding: "2rem",
-    boxShadow: "0 2px 12px rgba(0,0,0,0.04)"
+    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+    width: "100%"
   },
   newsletter: { maxWidth: 680, margin: "0 auto" },
   footer: {
