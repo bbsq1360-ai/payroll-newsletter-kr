@@ -157,7 +157,7 @@ export default function Home() {
 }
 
 const s = {
-  page: { display: "flex", flexDirection: "column", minHeight: "100vh" },
+  page: { minHeight: "100vh" },
   header: { background: "#0A1628", padding: "1.5rem 2rem", flexShrink: 0 },
   headerInner: {
     maxWidth: 760, margin: "0 auto",
