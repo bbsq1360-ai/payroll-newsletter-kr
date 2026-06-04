@@ -148,7 +148,7 @@ export default function Home() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: auto; }
+        html, body { height: auto !important; overflow-y: auto !important; }
         body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: #f4f5f7; }
         @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>
