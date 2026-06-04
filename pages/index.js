@@ -6,20 +6,17 @@ export default function Home() {
   const [html, setHtml] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [issueInfo, setIssueInfo] = useState(null)
 
   async function generate() {
     setLoading(true)
     setError("")
     setHtml("")
-    setIssueInfo(null)
 
     try {
       const res = await fetch("/api/generate", { method: "POST" })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "생성 실패")
       setHtml(data.html)
-      setIssueInfo({ issueNumber: data.issueNumber, dateStr: data.dateStr })
     } catch (e) {
       setError(e.message)
     } finally {
@@ -35,57 +32,49 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div style={styles.page}>
-        {/* 상단 헤더 */}
-        <header style={styles.header}>
-          <div style={styles.headerInner}>
+      <div style={s.page}>
+        <header style={s.header}>
+          <div style={s.headerInner}>
             <div>
-              <div style={styles.headerTag}># payroll-labor-law-kr</div>
-              <h1 style={styles.headerTitle}>한국 급여·노동법 뉴스레터</h1>
-              <p style={styles.headerSub}>AI가 최신 노동법·급여 이슈를 실시간으로 정리합니다</p>
+              <div style={s.htag}># payroll-labor-law-kr</div>
+              <h1 style={s.htitle}>한국 급여·노동법 뉴스레터</h1>
+              <p style={s.hsub}>AI가 최신 노동법·급여 이슈를 실시간으로 정리합니다</p>
             </div>
             <button
               onClick={generate}
               disabled={loading}
-              style={{ ...styles.generateBtn, ...(loading ? styles.generateBtnDisabled : {}) }}
+              style={loading ? {...s.btn, ...s.btnDisabled} : s.btn}
             >
-              {loading ? (
-                <span style={styles.btnInner}>
-                  <span style={styles.spinner} />
-                  뉴스레터 생성 중...
-                </span>
-              ) : (
-                <span style={styles.btnInner}>
-                  ✦ 오늘의 뉴스레터 생성
-                </span>
-              )}
+              {loading
+                ? <span style={s.btnInner}><span style={s.spinner} />뉴스레터 생성 중...</span>
+                : <span style={s.btnInner}>✦ 오늘의 뉴스레터 생성</span>
+              }
             </button>
           </div>
         </header>
 
-        {/* 메인 콘텐츠 */}
-        <main style={styles.main}>
+        <main style={s.main}>
           {!html && !loading && !error && (
-            <div style={styles.empty}>
-              <div style={styles.emptyIcon}>📋</div>
-              <p style={styles.emptyTitle}>버튼을 눌러 오늘의 뉴스레터를 생성하세요</p>
-              <p style={styles.emptySub}>
+            <div style={s.empty}>
+              <div style={s.emptyIcon}>📋</div>
+              <p style={s.emptyTitle}>버튼을 눌러 오늘의 뉴스레터를 생성하세요</p>
+              <p style={s.emptySub}>
                 Claude AI가 최신 한국 노동법·급여 이슈를 검색하고<br />
                 실무 담당자를 위한 뉴스레터를 자동으로 작성합니다
               </p>
-              <div style={styles.emptyFeatures}>
-                <span style={styles.featureTag}>🔴 URGENT 즉시 조치</span>
-                <span style={styles.featureTag}>🟡 IMPORTANT 시스템 반영</span>
-                <span style={styles.featureTag}>🟢 FYI 동향 모니터링</span>
+              <div style={s.emptyTags}>
+                <span style={s.etag}>🔴 URGENT 즉시 조치</span>
+                <span style={s.etag}>🟡 IMPORTANT 시스템 반영</span>
+                <span style={s.etag}>🟢 FYI 동향 모니터링</span>
               </div>
             </div>
           )}
 
           {loading && (
-            <div style={styles.loadingBox}>
-              <div style={styles.loadingSpinner} />
-              <p style={styles.loadingTitle}>뉴스레터 생성 중</p>
-              <p style={styles.loadingSub}>
+            <div style={s.loadingBox}>
+              <div style={s.loadingSpinner} />
+              <p style={s.loadingTitle}>뉴스레터 생성 중</p>
+              <p style={s.loadingSub}>
                 최신 노동법·급여 뉴스를 검색하고 정리하는 중입니다<br />
                 약 30~60초 소요됩니다
               </p>
@@ -93,119 +82,134 @@ export default function Home() {
           )}
 
           {error && (
-            <div style={styles.errorBox}>
-              <p style={styles.errorTitle}>⚠️ 오류가 발생했습니다</p>
-              <p style={styles.errorMsg}>{error}</p>
-              <button onClick={generate} style={styles.retryBtn}>다시 시도</button>
+            <div style={s.errorBox}>
+              <p style={s.errorTitle}>⚠️ 오류가 발생했습니다</p>
+              <p style={s.errorMsg}>{error}</p>
+              <button onClick={generate} style={s.retryBtn}>다시 시도</button>
             </div>
           )}
 
           {html && (
-            <div style={styles.newsletterWrap}>
-              <div
-                style={styles.newsletter}
-                dangerouslySetInnerHTML={{ __html: html }}
-              />
+            <div style={s.nlWrap}>
+              <div dangerouslySetInnerHTML={{ __html: html }} />
             </div>
           )}
         </main>
 
-        {/* 푸터 */}
-        <footer style={styles.footer}>
-          <p>Generated by Claude AI &nbsp;·&nbsp; <a href="/admin" style={styles.footerLink}>관리자</a></p>
+        <footer style={s.footer}>
+          <p>Generated by Claude AI &nbsp;·&nbsp; <a href="/admin" style={s.footerLink}>관리자</a></p>
         </footer>
       </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: #f4f5f7; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { height: auto; }
+        body { font-family: 'Noto Sans KR', -apple-system, sans-serif; background: #f4f5f7; height: auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
       `}</style>
     </>
   )
 }
 
-const styles = {
-  page: { minHeight: "100vh", display: "flex", flexDirection: "column" },
-  header: { background: "#0A1628", padding: "2rem 1rem" },
-  headerInner: {
-    maxWidth: 760, margin: "0 auto",
-    display: "flex", alignItems: "flex-start",
-    justifyContent: "space-between", gap: "1.5rem", flexWrap: "wrap"
+const s = {
+  page: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
   },
-  headerTag: {
+  header: {
+    background: "#0A1628",
+    padding: "1.5rem 2rem",
+    flexShrink: 0,
+  },
+  headerInner: {
+    maxWidth: 760,
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    flexWrap: "wrap",
+  },
+  htag: {
     fontSize: 12, fontWeight: 500,
     color: "#378ADD", background: "rgba(55,138,221,0.15)",
     padding: "3px 10px", borderRadius: 100,
-    display: "inline-block", marginBottom: 8
+    display: "inline-block", marginBottom: 6,
   },
-  headerTitle: { fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 6 },
-  headerSub: { fontSize: 13, color: "#8899AA" },
-  generateBtn: {
+  htitle: { fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 4 },
+  hsub: { fontSize: 13, color: "#8899AA" },
+  btn: {
     background: "#378ADD", color: "#fff", border: "none",
-    borderRadius: 10, padding: "12px 24px",
+    borderRadius: 10, padding: "11px 22px",
     fontSize: 14, fontWeight: 600, cursor: "pointer",
-    whiteSpace: "nowrap", alignSelf: "center",
-    transition: "background 0.2s"
+    whiteSpace: "nowrap",
   },
-  generateBtnDisabled: { background: "#2a5f8a", cursor: "not-allowed" },
+  btnDisabled: { background: "#2a5f8a", cursor: "not-allowed" },
   btnInner: { display: "flex", alignItems: "center", gap: 8 },
   spinner: {
-    width: 14, height: 14, border: "2px solid rgba(255,255,255,0.3)",
+    width: 14, height: 14,
+    border: "2px solid rgba(255,255,255,0.3)",
     borderTopColor: "#fff", borderRadius: "50%",
-    animation: "spin 0.8s linear infinite", display: "inline-block"
+    animation: "spin 0.8s linear infinite",
+    display: "inline-block",
   },
-  main: { flex: 1, maxWidth: 760, margin: "0 auto", padding: "2rem 1rem", width: "100%", height: "auto" },
+  main: {
+    flex: 1,
+    maxWidth: 760,
+    margin: "0 auto",
+    padding: "2rem 1rem",
+    width: "100%",
+  },
   empty: { textAlign: "center", padding: "4rem 1rem" },
   emptyIcon: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { fontSize: 18, fontWeight: 600, color: "#1a1a2e", marginBottom: 8 },
   emptySub: { fontSize: 14, color: "#666", lineHeight: 1.7, marginBottom: 24 },
-  emptyFeatures: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" },
-  featureTag: {
+  emptyTags: { display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" },
+  etag: {
     fontSize: 12, padding: "5px 12px",
     background: "#fff", border: "1px solid #e0e0e0",
-    borderRadius: 100, color: "#444"
+    borderRadius: 100, color: "#444",
   },
   loadingBox: {
     textAlign: "center", padding: "4rem 1rem",
     background: "#fff", borderRadius: 16,
-    border: "1px solid #e8e8e8"
+    border: "1px solid #e8e8e8",
   },
   loadingSpinner: {
     width: 40, height: 40,
     border: "3px solid #e0e0e0", borderTopColor: "#378ADD",
     borderRadius: "50%", animation: "spin 1s linear infinite",
-    margin: "0 auto 1.5rem"
+    margin: "0 auto 1.5rem",
   },
   loadingTitle: { fontSize: 16, fontWeight: 600, color: "#111", marginBottom: 8 },
   loadingSub: { fontSize: 13, color: "#888", lineHeight: 1.8 },
   errorBox: {
     textAlign: "center", padding: "2rem",
     background: "#fff5f5", border: "1px solid #fcc",
-    borderRadius: 12
+    borderRadius: 12,
   },
   errorTitle: { fontSize: 16, fontWeight: 600, color: "#c0392b", marginBottom: 8 },
   errorMsg: { fontSize: 13, color: "#666", marginBottom: 16 },
   retryBtn: {
     background: "#E24B4A", color: "#fff", border: "none",
     borderRadius: 8, padding: "8px 20px",
-    fontSize: 13, cursor: "pointer"
+    fontSize: 13, cursor: "pointer",
   },
-  newsletterWrap: {
-    background: "#fff", borderRadius: 16,
-    border: "1px solid #e8e8e8", padding: "2rem",
+  nlWrap: {
+    background: "#fff",
+    borderRadius: 16,
+    border: "1px solid #e8e8e8",
+    padding: "2rem",
     boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-    width: "100%",
-    height: "auto",
-    overflow: "visible"
   },
-  newsletter: { maxWidth: 680, margin: "0 auto" },
   footer: {
     textAlign: "center", padding: "1.5rem",
     fontSize: 12, color: "#aaa",
-    borderTop: "1px solid #e8e8e8", background: "#fff"
+    borderTop: "1px solid #e8e8e8",
+    background: "#fff",
+    flexShrink: 0,
   },
-  footerLink: { color: "#aaa", textDecoration: "none" }
+  footerLink: { color: "#aaa", textDecoration: "none" },
 }
